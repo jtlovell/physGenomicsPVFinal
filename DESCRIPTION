@@ -1,10 +1,33 @@
 Package: physGenomicsPVFinal
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Differential Gene Expression for several Switchgrass Projects
 Version: 0.1
 Date: 2016-02-01
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: JT Lovell
+Maintainer: John T. Lovell <johntlovell@gmail.com>
+Description: Contains a set of functions and data to conduct analyses
+License: WP-3
 LazyData: TRUE
+Imports:
+  DESeq2,
+  limma,
+  edgeR,
+  qvalue,
+  plyr,
+  tidyr,
+  reshape,
+  reshape2,
+  data.table,
+  qdap,
+  gdata,
+  lme4,
+  MASS,
+  vegan,
+  lmerTest,
+  car,
+  extremevalues,
+  ggplot2,
+  VennDiagram,
+  venneuler,
+  Heatplus,
+  dendroextras
