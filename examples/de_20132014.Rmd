@@ -1,3 +1,52 @@
+---
+title: "Statistical Analysis of 2012 Expression data"
+author: "John T. Lovell"
+date: "1-February 2016"
+output:
+  html_document:
+    fig_height: 3
+    fig_width: 5
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r, include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+require(mosaic)
+```
+
+```{r, include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# This changes the default colors in lattice plots.
+trellis.par.set(theme=theme.mosaic())  
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+```{r, include=FALSE}
+# Load additional packages here.  Uncomment the line below to use Project MOSAIC data sets.
+# require(mosaicData)   
+```
+
+```{r, include=FALSE} 
+library(devtools)
+install_github("jtlovell/physGenomicsPVFinal")
+library(physGenomicsPVFinal)
+```
+
+```{r}
 library(physGenomicsPVFinal)
 rm(list=ls())
 data(tmpwfc20132014_3treatments)
@@ -7,11 +56,11 @@ info<-info1314
 counts<-counts1314
 
 ### cull to high and low, given bad mean data at WFC
-# phys.lines<-which(info$Treatment != "mean")
-# counts<-counts[,phys.lines]
-# info<-info[phys.lines,]
-# info$Treatment<-factor(info$Treatment, levels=c("low","high"))
-# info$LocTrtYear<-as.factor(as.character(info$LocTrtYear))
+phys.lines<-which(info$Treatment != "mean")
+counts<-counts[,phys.lines]
+info<-info[phys.lines,]
+info$Treatment<-factor(info$Treatment, levels=c("low","high"))
+info$LocTrtYear<-as.factor(as.character(info$LocTrtYear))
 #################################
 # Part 2.1: Full model
 #################################
@@ -24,14 +73,12 @@ stats.allests<-stats$stats
 # Part 1.2: All pairwise contrasts
 #################################
 ## Generate a design matrix that specifies all relavant contrasts
-design <- model.matrix(~ 0+LocTrtYear , data=info)
+design <- model.matrix(~ 0+LocTrtYear + order , data=info)
 colnames(design)<-gsub(c("LocTrtYear"),c("trt"), colnames(design))
 contrast.matrix <- makeContrasts(trtTMP_high_2013-trtTMP_low_2013, trtTMP_high_2014-trtTMP_low_2014,
                                  trtWFC_high_2013-trtWFC_low_2013, trtWFC_high_2014-trtWFC_low_2014,
                                  levels=design)
-contrastLimma<-pipeLIMMA.voomfit(counts=counts, info=info, design=design, block=info$sb_unique)
-stats.contrast<-ebayes(contrasts.fit(contrastLimma$lmFit,contrast.matrix))
-stats.cnt<-getContrastStats(fit=stats.contrast, contrasts=contrast.matrix, names=c("tmp2013","tmp2014","wfc2013","wfc2014"))
+lim.contrasts<-anovaLIMMA(counts=counts, design=design, block=info$Sub_Block, contrast.matrix=contrast.matrix)
 
 #################################
 # Part 1.3: Run PCA
@@ -54,7 +101,7 @@ stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ MDWP
 stats.fullmodel.mdwponly<-stats$simpleStats
 stats.allests.mdwponly<-stats$stats
 
-save(stats.fullmodel, stats.allests, lim.contrasts, pca, voom.trtByMonth,
-     stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.mdwponly, stats.fullmodel.mdwponly,
-     file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/stats_output/shelter201314_allstats.RData")
-
+#save(stats.fullmodel, stats.allests, lim.contrasts, pca, voom.trtByMonth,
+#     stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.mdwponly, stats.fullmodel.mdwponly,
+#     file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/stats_output/shelter201314_allstats.RData")
+```
