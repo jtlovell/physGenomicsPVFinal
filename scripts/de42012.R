@@ -1,5 +1,5 @@
 # library(devtools)
-# install_github("jtlovell/physGenomicsPVFinal")
+install_github("jtlovell/physGenomicsPVFinal")
 library(physGenomicsPVFinal)
 data(temple2012_6treatments)
 
@@ -67,11 +67,11 @@ stats.allests.mdwp<-stats$stats
 #################################
 # Part 1.6: Run model with MDWP as the predictor
 #################################
-stats<-pipeLIMMA(counts=counts, info=info, useBlock=info$Sub_Block, formula="~ order")
+stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ order")
 stats.fullmodel.order<-stats$simpleStats
 stats.allests.order<-stats$stats
 
-save(stats.fullmodel, stats.allests, lim.contrasts, pca,
+save(stats.fullmodel, stats.allests, lim.contrasts, pca, v,
      stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.order, stats.allests.order,
-     file="./stats_output/tempe2012_allstats.RData")
+     file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/stats_output/tempe2012_allstats.RData")
 
