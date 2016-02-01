@@ -1,6 +1,6 @@
-# library(devtools)
+library(devtools)
 install_github("jtlovell/physGenomicsPVFinal")
-library(physGenomicsPVFinal)
+require(physGenomicsPVFinal)
 data(temple2012_6treatments)
 
 ### for conviencence, rename info and counts
