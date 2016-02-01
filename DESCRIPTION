@@ -8,7 +8,7 @@ Maintainer: John T. Lovell <johntlovell@gmail.com>
 Description: Contains a set of functions and data to conduct analyses
 License: WP-3
 LazyData: TRUE
-Imports:
+Depends:
   DESeq2,
   limma,
   edgeR,
