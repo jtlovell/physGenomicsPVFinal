@@ -102,5 +102,6 @@ cbind(info$ID, colnames(counts))
 info$Treatment<-factor(info$Treatment, levels=c("low","25th","mean", "ambient", "75th", "high"))
 info$Treatment.num<-as.numeric(info$Treatment)
 info<-merge(info[,-which(colnames(info)=="Block"),], layout, by="PLOT")
-
-save(info, counts, file="/Users/JLovell/Dropbox/Switchgrass_PlantPhys/physGenomicsPVFinal/data/temple2012_6treatments.RData")
+info12<-info
+counts12<-counts
+save(info12, counts12, file="/Users/JLovell/Dropbox/Switchgrass_PlantPhys/physGenomicsPVFinal/data/temple2012_6treatments.RData")

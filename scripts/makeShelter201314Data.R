@@ -85,6 +85,7 @@ info$PLOT<-factor(info$PLOT)
 info$LocTrtYear<-as.factor(with(info, paste(Location,Treatment,Year,sep="_")))
 info$LocTrtYear.num<-as.numeric(info$LocTrtYear)
 info<-ddply(info, .(Year, Month), mutate, order=rank(order))
-info$sb_unique<-as.factor(info$Sub_Block)
-
-save(info, counts, file="/Users/JLovell/Dropbox/Switchgrass_PlantPhys/physGenomicsPVFinal/data/tmpwfc20132014_3treatments.RData")
+info$sb_unique<-as.factor(info$sb_unique)
+info1314<-info
+counts1314<-counts
+save(info1314, counts1314, file="/Users/JLovell/Dropbox/Switchgrass_PlantPhys/physGenomicsPVFinal/data/tmpwfc20132014_3treatments.RData")
