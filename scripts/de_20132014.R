@@ -1,6 +1,8 @@
+library(devtools)
+install_github("jtlovell/physGenomicsPVFinal")
 library(physGenomicsPVFinal)
 rm(list=ls())
-data(tmpwfc20132014_3treatments)
+data(tmpwfc20132014_2treatments)
 
 ### for conviencence, rename info and counts
 info<-info1314
@@ -24,6 +26,14 @@ stats.allests<-stats$stats
 # Part 1.2: All pairwise contrasts
 #################################
 ## Generate a design matrix that specifies all relavant contrasts
+
+design <- model.matrix(~ 0+factor(Year_Location_Treatment.mat) + order , data=info)
+colnames(design)[1:8]<-levels(info$Year_Location_Treatment)
+colnames(design)[1:8]<-multigsub(c("2013","2014"),c("a","b"), colnames(design)[1:8])
+
+contrast.matrix <- makeContrasts(a_TMP_high-a_TMP_low, b_TMP_high-b_TMP_low, a_WFC_high-a_WFC_low, b_WFC_high-b_WFC_low,
+                                 levels=design)
+
 design <- model.matrix(~ 0+LocTrtYear , data=info)
 colnames(design)<-gsub(c("LocTrtYear"),c("trt"), colnames(design))
 contrast.matrix <- makeContrasts(trtTMP_high_2013-trtTMP_low_2013, trtTMP_high_2014-trtTMP_low_2014,
@@ -32,6 +42,13 @@ contrast.matrix <- makeContrasts(trtTMP_high_2013-trtTMP_low_2013, trtTMP_high_2
 contrastLimma<-pipeLIMMA.voomfit(counts=counts, info=info, design=design, block=info$sb_unique)
 stats.contrast<-ebayes(contrasts.fit(contrastLimma$lmFit,contrast.matrix))
 stats.cnt<-getContrastStats(fit=stats.contrast, contrasts=contrast.matrix, names=c("tmp2013","tmp2014","wfc2013","wfc2014"))
+
+design <- model.matrix(~ 0+LocTrtYear + order , data=info)
+colnames(design)<-gsub(c("LocTrtYear"),c("trt"), colnames(design))
+contrast.matrix <- makeContrasts(trtTMP_high_2013-trtTMP_low_2013, trtTMP_high_2014-trtTMP_low_2014,
+                                 trtWFC_high_2013-trtWFC_low_2013, trtWFC_high_2014-trtWFC_low_2014,
+                                 levels=design)
+lim.contrasts<-anovaLIMMA(counts=counts, design=design, block=info$Sub_Block, contrast.matrix=contrast.matrix)
 
 #################################
 # Part 1.3: Run PCA
