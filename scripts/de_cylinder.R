@@ -2,7 +2,8 @@ library(physGenomicsPVFinal)
 rm(list=ls())
 data(cylinder)
 # toss the column
-counts<-counts[,-1]
+counts<-countscyl
+info<-infocyl
 counts<-counts[(rowSums(counts)/ncol(counts))>=5,]
 
 #################################
