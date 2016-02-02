@@ -30,14 +30,8 @@ wd<-which(info$Treatment!="recovery")
 info.wetdry<-info[wd,]
 counts.wetdry<-counts[,wd]
 with(info.wetdry, table(Treatment, Time, Day))
-<<<<<<< HEAD
-<<<<<<< HEAD
 with(info.recovery, table(Treatment, Time, Day))
-=======
->>>>>>> 794ff3406326131b7454c7edef1f53cdcf6a1eb2
-=======
 with(info.recovery, table(Treatment, Time, Day))
->>>>>>> 8c478d63315fed1a8742b057ad87a1a1686b7941
 
 info.wetdry$id<-factor(info.wetdry$id, levels=unique(info.wetdry$id)[order(as.numeric(unique(info.wetdry$id)))])
 info.recovery$id<-factor(info.recovery$id, levels=unique(info.recovery$id)[order(as.numeric(unique(info.recovery$id)))])
