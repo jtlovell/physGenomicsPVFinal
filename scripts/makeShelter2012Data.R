@@ -103,5 +103,5 @@ info$Treatment<-factor(info$Treatment, levels=c("low","25th","mean", "ambient", 
 info$Treatment.num<-as.numeric(info$Treatment)
 info<-merge(info[,-which(colnames(info)=="Block"),], layout, by="PLOT")
 info12<-info
-counts12<-counts
-save(info12, counts12, file="/Users/JLovell/Dropbox/Switchgrass_PlantPhys/physGenomicsPVFinal/data/temple2012_6treatments.RData")
+counts12<-counts[grepl("Pav",rownames(counts)),]
+save(info12, counts12, file="/Users/John/Desktop/Dropbox/Switchgrass_PlantPhys/physGenomicsPVFinal/data/temple2012_6treatments.RData")
