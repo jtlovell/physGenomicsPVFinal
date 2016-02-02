@@ -81,5 +81,7 @@ for(i in unique(info$PLOT)){
   }
 }
 info1314<-info
-counts1314<-counts
+counts1314<-counts[grepl("Pav",rownames(counts)),]
+load("/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/physGenomicsPVFinal/data/tmpwfc20132014_3treatments.RData")
+counts1314<-counts1314[(rowSums(counts1314)/ncol(counts1314))>=5,]
 save(info1314, counts1314, file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/physGenomicsPVFinal/data/tmpwfc20132014_3treatments.RData")
