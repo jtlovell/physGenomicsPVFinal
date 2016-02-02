@@ -1,4 +1,7 @@
 counts2Venn<-function(x, cols, names, colors=c("darkblue","green","cyan","darkred"), ...){
+
+  require(venneuler, warn.conflicts = FALSE, quietly=TRUE)
+
   mat<-as.matrix(x[,cols])
   colnames(mat)<-names
   cs<-apply(mat,2, function(x) sum(x!=0))

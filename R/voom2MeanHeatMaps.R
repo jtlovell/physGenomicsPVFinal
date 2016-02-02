@@ -1,4 +1,9 @@
 voom2MeanHeatMaps<-function(v,grps=info$Treatment,rowids=info$ID,thresh=7, calcMeans=T, newIDs=NA, allHMtoo=T){
+  opar<-par()
+  require(gdata, warn.conflicts = FALSE, quietly=TRUE)
+  require(dendroextras, warn.conflicts = FALSE, quietly=TRUE)
+  require(Heatplus, warn.conflicts = FALSE, quietly=TRUE)
+
   if(calcMeans){
     v<-as.matrix(v)
     colnames(v)[startsWith(colnames(v),"X")]<-gsub("X","",colnames(v)[startsWith(colnames(v),"X")])
@@ -36,4 +41,5 @@ voom2MeanHeatMaps<-function(v,grps=info$Treatment,rowids=info$ID,thresh=7, calcM
     plot(hm1, cex.axis=.5, main = paste("cluster",i), col.main=rainbow(length(names(table(cut.in))[table(cut.in)>1]))[i])
   }
   return(mean.v)
+  par(opar)
 }

@@ -1,5 +1,5 @@
 ---
-title: "Statistical Analysis of 2012 Expression data"
+title: "Statistical Analysis of 2013-2014 Expression data"
 author: "John T. Lovell"
 date: "1-February 2016"
 output:

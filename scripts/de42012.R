@@ -68,7 +68,7 @@ stats.fullmodel.mdwp<-stats$simpleStats
 stats.allests.mdwp<-stats$stats
 
 #################################
-# Part 6: Run model with MDWP as the predictor
+# Part 6: Run model with Sampling Order as the predictor, controlling for treatment
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ order")
 stats.fullmodel.order<-stats$simpleStats
