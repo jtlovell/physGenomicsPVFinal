@@ -3,6 +3,11 @@ pipeLIMMA<-function(counts, info, formula, block,
                     tests="all",geneIDs=NA, useBlock=TRUE,
                     getTopTable=FALSE, getEbayes=TRUE,
                     contrasts=NULL, simplify=TRUE, verbose=TRUE, ...){
+
+  require(limma)
+  require(edgeR)
+  require(qvalue)
+
   if(verbose) cat("calculating normalization factors ... \n")
   if(is.na(geneIDs)){
     geneIDs<-rownames(counts)

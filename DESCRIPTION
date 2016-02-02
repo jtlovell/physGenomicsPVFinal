@@ -9,25 +9,5 @@ Description: Contains a set of functions and data to conduct analyses
 License: WP-3
 LazyData: TRUE
 Depends:
-  DESeq2,
-  limma,
-  edgeR,
-  qvalue,
-  plyr,
-  tidyr,
-  reshape,
-  reshape2,
-  data.table,
-  qdap,
-  gdata,
-  lme4,
-  MASS,
-  vegan,
-  lmerTest,
-  car,
-  extremevalues,
-  ggplot2,
-  VennDiagram,
-  venneuler,
-  Heatplus,
-  dendroextras
+  data.table
+

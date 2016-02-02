@@ -1,4 +1,12 @@
-anovaLIMMA<-function(counts, design, contrast.matrix, block=NULL, useBlock=F, printSig=TRUE, makePlots=TRUE, verbose=T){
+anovaLIMMA<-function(counts, design, contrast.matrix,
+                     block=NULL, useBlock=F, printSig=TRUE, makePlots=TRUE, verbose=T){
+
+  require(limma)
+  require(edgeR)
+  require(qvalue)
+  require(ggplot2)
+  require(reshape2)
+
   geneIDs<-rownames(counts)
   if(verbose) cat("calculating normalization factors...\n")
   y <- DGEList(counts = counts)
