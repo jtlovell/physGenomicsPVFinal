@@ -26,9 +26,9 @@ lim.contrasts<-anovaLIMMA(counts=counts, design=model.matrix(~0+f), block=info$p
 #################################
 # Part 1.3: Run PCA
 #################################
-pca<-DESeq2PCA(counts=counts, info=info, formula="~ trt * time",
-               factors2Plot=c("trt", "time"),
-               factors2Extract=c("trt", "time","psi",  "RWC", "LDMC", "spad", "psi.delta", "Photo","Cond", "Ci","id","pot"))
+pca<-voom2PCA(v=voom.trtByMonth, info=info, ids=info$id)
+ggplot(pca, aes(x=PC1, y=PC2, col=time, shape=trt))+
+  theme_bw()+geom_point(size=4)+scale_shape_manual(values=c(2,19))
 
 #################################
 # Part 1.4: Run model with MDWP as the predictor

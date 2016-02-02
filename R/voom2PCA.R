@@ -1,4 +1,5 @@
 voom2PCA<-function(v, info, ids, plotit=TRUE){
+
   pc<-prcomp(t(v))
   prop.var<-(pc$sdev)^2 / sum(pc$sdev^2)
   dat<-data.frame(info, pc$x[,1:3])
