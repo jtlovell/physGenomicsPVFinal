@@ -1,14 +1,20 @@
 rm(list=ls())
+library(data.table)
 counts<-fread("/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/R_package/switchgrassPhysGenomics/data/Eli/colorspace_GSM_counts.csv", stringsAsFactors=F)
 # read in all the data for the shelter experiment
 info<-read.csv("/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/R_package/switchgrassPhysGenomics/data/Eli/colorspace_GSM_counts_X.csv", stringsAsFactors=F)
 info$id<-sapply(info$Sample_title, function(x) strsplit(x, "_")[[1]][4])
-
-info$id[info$id %in% c("8a","8b")]<-"8"
-info$Day<-gsub(" ","", info$Day)
 counts<-data.frame(counts)
 rownames(counts)<-counts$gene
 counts<-counts[,-1]
+
+badlines<-c(grep("GSM1396427", colnames(counts)),grep("96378", colnames(counts)),grep("96438", colnames(counts)))
+info<-info[-badlines,]
+counts<-counts[,-badlines]
+
+info$id[info$id %in% c("8a","8b")]<-"8"
+info$Day<-gsub(" ","", info$Day)
+
 libs<-colSums(counts)
 
 counts<-counts[,libs>1005000]
