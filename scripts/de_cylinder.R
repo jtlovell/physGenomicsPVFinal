@@ -1,13 +1,15 @@
 library(physGenomicsPVFinal)
 rm(list=ls())
+
+# this is the 2011 Pickle Cylinder data
 data(cylinder)
-# toss the column
+
+# rename for convenience
 counts<-countscyl
 info<-infocyl
-counts<-counts[(rowSums(counts)/ncol(counts))>=5,]
 
 #################################
-# Part 2.1: Full model
+# Part 1: Full model
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$pot, formula="~ trt * time")
 voom.trtByMonth<-stats$voom[["E"]]
@@ -15,7 +17,7 @@ stats.fullmodel<-stats$simpleStats
 stats.allests<-stats$stats
 
 #################################
-# Part 1.2: All pairwise contrasts
+# Part 2: All pairwise contrasts
 #################################
 ## Generate a design matrix that specifies all relavant contrasts
 f<-info$time_trt
@@ -24,21 +26,21 @@ contrast.matrix<-makeContrasts(fdawn_Wet-fdawn_Dry, fmidday_Wet-fmidday_Dry, fdu
                                levels=design)
 lim.contrasts<-anovaLIMMA(counts=counts, design=model.matrix(~0+f), block=info$pot, contrast.matrix=contrast.matrix)
 #################################
-# Part 1.3: Run PCA
+# Part 3: Run PCA
 #################################
 pca<-voom2PCA(v=voom.trtByMonth, info=info, ids=info$id)
 ggplot(pca, aes(x=PC1, y=PC2, col=time, shape=trt))+
   theme_bw()+geom_point(size=4)+scale_shape_manual(values=c(2,19))
 
 #################################
-# Part 1.4: Run model with MDWP as the predictor
+# Part 4: Run model with MDWP as the predictor
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$pot, formula="~ psi + time")
 stats.fullmodel.mdwp<-stats$simpleStats
 stats.allests.mdwp<-stats$stats
 
 #################################
-# Part 1.5: Run model with MDWP as the predictor, without controlling for location or year
+# Part 5: Run model with MDWP as the predictor, without controlling for location or year
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$pot, formula="~ psi")
 stats.fullmodel.mdwponly<-stats$simpleStats

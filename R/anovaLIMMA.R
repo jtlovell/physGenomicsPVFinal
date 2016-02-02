@@ -1,11 +1,12 @@
 anovaLIMMA<-function(counts, design, contrast.matrix,
                      block=NULL, useBlock=F, printSig=TRUE, makePlots=TRUE, verbose=T){
 
-  require(limma)
-  require(edgeR)
-  require(qvalue)
-  require(ggplot2)
-  require(reshape2)
+  require(limma, warn.conflicts = FALSE, quietly=TRUE)
+  require(edgeR, warn.conflicts = FALSE, quietly=TRUE)
+  require(qvalue, warn.conflicts = FALSE, quietly=TRUE)
+  require(ggplot2, warn.conflicts = FALSE, quietly=TRUE)
+  require(adegenet, warn.conflicts = FALSE, quietly=TRUE)
+  require(qdap, warn.conflicts = FALSE, quietly=TRUE)
 
   geneIDs<-rownames(counts)
   if(verbose) cat("calculating normalization factors...\n")

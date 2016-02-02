@@ -4,9 +4,9 @@ pipeLIMMA<-function(counts, info, formula, block,
                     getTopTable=FALSE, getEbayes=TRUE,
                     contrasts=NULL, simplify=TRUE, verbose=TRUE, ...){
 
-  require(limma)
-  require(edgeR)
-  require(qvalue)
+  require(limma, warn.conflicts = FALSE, quietly=TRUE)
+  require(edgeR, warn.conflicts = FALSE, quietly=TRUE)
+  require(qvalue, warn.conflicts = FALSE, quietly=TRUE)
 
   if(verbose) cat("calculating normalization factors ... \n")
   if(is.na(geneIDs)){
