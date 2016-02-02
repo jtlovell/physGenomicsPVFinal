@@ -1,3 +1,52 @@
+---
+title: "Statistical Analysis of 2012 Expression data"
+author: "John T. Lovell"
+date: "1-February 2016"
+output:
+  html_document:
+    fig_height: 8
+    fig_width: 8
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r, include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+require(mosaic)
+```
+
+```{r, include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# This changes the default colors in lattice plots.
+trellis.par.set(theme=theme.mosaic())  
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+```{r, include=FALSE}
+# Load additional packages here.  Uncomment the line below to use Project MOSAIC data sets.
+# require(mosaicData)   
+```
+
+```{r, include=FALSE} 
+library(devtools)
+install_github("jtlovell/physGenomicsPVFinal")
+library(physGenomicsPVFinal)
+```
+
+```{r}
 library(physGenomicsPVFinal)
 rm(list=ls())
 
@@ -63,12 +112,11 @@ ggplot(pca, aes(x=MDWP, y=PC2))+geom_point(aes(col=Treatment), size=4) + theme_b
 # stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ MDWP")
 # stats.fullmodel.mdwp<-stats$simpleStats
 # stats.allests.mdwp<-stats$stats
-
 #################################
 mdwp.q.05<-makeBinarySig(stats.allests.mdwp, what="mdwp_q.value", alpha=0.05)
-trt.q.05<-makeBinarySig(stats.fullmodel.subtrt, what="Fqvalue", alpha=0.05)
+trt.q.05<-makeBinarySig(stats.fullmodel, what="Fqvalue", alpha=0.05)
 mdwp.q.1<-makeBinarySig(stats.allests.mdwp, what="mdwp_q.value", alpha=0.1)
-trt.q.1<-makeBinarySig(stats.fullmodel.subtrt, what="Fqvalue", alpha=0.1)
+trt.q.1<-makeBinarySig(stats.fullmodel, what="Fqvalue", alpha=0.1)
 hl.q.05<-makeBinarySig(lim.contrasts, what="q.value_fhigh...flow", alpha=0.05)
 hl.q.1<-makeBinarySig(lim.contrasts, what="q.value_fhigh...flow", alpha=0.1)
 trt.mdwp.qs<-data.frame(trt.05=trt.q.05,mdwp.05=mdwp.q.05, hl.05=hl.q.05,  trt.1=trt.q.1, mdwp.1=mdwp.q.1, hl.1=hl.q.1)
@@ -111,3 +159,5 @@ ggplot(vtp[!is.na(vtp$order),], aes(x=order, y=value, col=Treatment))+ geom_poin
   scale_y_continuous("variance stabilized / normalized counts")+
   scale_x_continuous("order of RNA extraction, first plants were measured at 11:00, last plants ~ 13:00")+
   ggtitle("Effect of sampling time on 20 of the genes with strongest effects")
+
+```

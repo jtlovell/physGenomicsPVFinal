@@ -49,7 +49,7 @@ pipeLIMMA<-function(counts, info, formula, block,
                        fit$coefficients[,x],
                        fit$lods[,x],
                        fit$p.value[,x],
-                       qvalue(fit$p.value[,x])$qvalue)
+                       qvalue(fit$p.value[,x], pi0.method="bootstrap")$qvalue)
       colnames(out2)<-paste("ebayes",x,c("stdev.unscaled","coefficients","lods","p.value","q.value"),sep="_")
       out3<-data.frame(toptable(fit, p.value=1, coef=x, number=100000))
       out3<-out3[,c("logFC","t","B")]
@@ -65,7 +65,13 @@ pipeLIMMA<-function(counts, info, formula, block,
                         fit$coefficients[,x],
                         fit$lods[,x],
                         fit$p.value[,x],
-                        qvalue(fit$p.value[,x])$qvalue)
+                        if(grepl("Intercept", x)){
+                          NA
+                        }else{
+                          qvalue(fit$p.value[,x], pi0.method="bootstrap")$qvalue
+                        }
+        )
+
         colnames(out2)<-paste("ebayes",x,c("stdev.unscaled","coefficients","lods","p.value","q.value"),sep="_")
       }
     }
@@ -79,7 +85,7 @@ pipeLIMMA<-function(counts, info, formula, block,
                        Amean=fit$Amean,
                        Fstat=fit$F,
                        Fpvalue=fit$F.p.value,
-                       Fqvalue=qvalue(fit$F.p.value)$qvalue)
+                       Fqvalue=qvalue(fit$F.p.value, pi0.method="bootstrap")$qvalue)
   }
   tests.out2<-do.call(cbind, tests.out)
   all.out<-cbind(data.frame(out),tests.out2)

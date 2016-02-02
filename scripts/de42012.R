@@ -68,13 +68,20 @@ stats.fullmodel.mdwp<-stats$simpleStats
 stats.allests.mdwp<-stats$stats
 
 #################################
-# Part 6: Run model with Sampling Order as the predictor, controlling for treatment
+# Part 6: Run model with Sampling Order as the predictor
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ order")
 stats.fullmodel.order<-stats$simpleStats
 stats.allests.order<-stats$stats
 
+#################################
+# Part 7: Re-Run model for Treatment as the predictor
+#################################
+stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ Treatment")
+stats.fullmodel.subtrt<-stats$simpleStats
+stats.allests.subtrt<-stats$stats
+
 save(stats.fullmodel, stats.allests, lim.contrasts, pca, v,
-     stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.order, stats.allests.order,
+     stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.order, stats.allests.order,stats.fullmodel.subtrt, stats.allests.subtrt,
      file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/stats_output/tempe2012_allstats.RData")
 

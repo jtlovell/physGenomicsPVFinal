@@ -10,7 +10,7 @@ counts<-counts12
 library(ggplot2)
 #################################
 ### Part 1: Statistical presentation of main model
-# stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ Treatment")
+# stats<-pipeLIMMA(counts=counts, info=info, block=info$sb_unique, formula="~ Treatment * Location + Year + order")
 # v<-stats$voom[["E"]]
 # stats.fullmodel<-stats$simpleStats
 # stats.allests<-stats$stats
