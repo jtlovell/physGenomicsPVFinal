@@ -49,6 +49,6 @@ stats.fullmodel.mdwponly<-stats$simpleStats
 stats.allests.mdwponly<-stats$stats
 
 save(stats.fullmodel, stats.allests, lim.contrasts, pca, v,
-     stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.mdwponly, stats.fullmodel.mdwponly,
+     stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.mdwponly, stats.allests.mdwponly,
      file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/stats_output/shelter201314_allstats.RData")
 
