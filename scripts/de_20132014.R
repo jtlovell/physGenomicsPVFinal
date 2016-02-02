@@ -1,5 +1,3 @@
-# library(devtools)
-# install_github("jtlovell/physGenomicsPVFinal")
 library(physGenomicsPVFinal)
 rm(list=ls())
 data(tmpwfc20132014_2treatments)
@@ -8,17 +6,11 @@ data(tmpwfc20132014_2treatments)
 info<-info1314
 counts<-counts1314
 
-### cull to high and low, given bad mean data at WFC
-# phys.lines<-which(info$Treatment != "mean")
-# counts<-counts[,phys.lines]
-# info<-info[phys.lines,]
-# info$Treatment<-factor(info$Treatment, levels=c("low","high"))
-# info$LocTrtYear<-as.factor(as.character(info$LocTrtYear))
 #################################
 # Part 2.1: Full model
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$sb_unique, formula="~ Treatment * Location + Year + order")
-voom.trtByMonth<-stats$voom[["E"]]
+v<-stats$voom[["E"]]
 stats.fullmodel<-stats$simpleStats
 stats.allests<-stats$stats
 
@@ -36,27 +28,27 @@ contrast.matrix <- makeContrasts(TMP_13_high-TMP_13_low, WFC_13_high-WFC_13_low,
 lim.contrasts<-anovaLIMMA(counts=counts, design=design, block=info$Sub_Block, contrast.matrix=contrast.matrix)
 
 #################################
-# Part 1.3: Run PCA
+# Part 3: Run PCA
 #################################
-pca<-DESeq2PCA(counts=counts, info=info, formula="~ Treatment * Location + Year + order",
-               factors2Plot=c("Treatment", "Location", "Year"),
-               factors2Extract=c("Treatment", "Location", "Year","order","MDWP", "PDWP","ID"))
+pca<-voom2PCA(v=v, info=info, ids=info$ID)
+ggplot(pca, aes(x=PC1, y=PC2, col=Location, shape=Treatment))+geom_point(size=4)+ facet_wrap(~Year, nrow=2)+
+  theme_bw()+scale_shape_manual(values=c(2,19))
 
 #################################
-# Part 1.4: Run model with MDWP as the predictor
+# Part 4: Run model with MDWP as the predictor
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$sb_unique, formula="~ MDWP * Location + Year + order")
 stats.fullmodel.mdwp<-stats$simpleStats
 stats.allests.mdwp<-stats$stats
 
 #################################
-# Part 1.5: Run model with MDWP as the predictor, without controlling for location or year
+# Part 5: Run model with MDWP as the predictor, without controlling for location or year
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$sb_unique, formula="~ MDWP + order")
 stats.fullmodel.mdwponly<-stats$simpleStats
 stats.allests.mdwponly<-stats$stats
 
-save(stats.fullmodel, stats.allests, lim.contrasts, pca, voom.trtByMonth,
+save(stats.fullmodel, stats.allests, lim.contrasts, pca, v,
      stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.mdwponly, stats.fullmodel.mdwponly,
      file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/stats_output/shelter201314_allstats.RData")
 

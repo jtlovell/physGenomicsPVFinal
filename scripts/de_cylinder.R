@@ -12,7 +12,7 @@ info<-infocyl
 # Part 1: Full model
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$pot, formula="~ trt * time")
-voom.trtByMonth<-stats$voom[["E"]]
+v<-stats$voom[["E"]]
 stats.fullmodel<-stats$simpleStats
 stats.allests<-stats$stats
 
@@ -28,7 +28,7 @@ lim.contrasts<-anovaLIMMA(counts=counts, design=model.matrix(~0+f), block=info$p
 #################################
 # Part 3: Run PCA
 #################################
-pca<-voom2PCA(v=voom.trtByMonth, info=info, ids=info$id)
+pca<-voom2PCA(v=v, info=info, ids=info$id)
 ggplot(pca, aes(x=PC1, y=PC2, col=time, shape=trt))+
   theme_bw()+geom_point(size=4)+scale_shape_manual(values=c(2,19))
 
@@ -46,7 +46,6 @@ stats<-pipeLIMMA(counts=counts, info=info, block=info$pot, formula="~ psi")
 stats.fullmodel.mdwponly<-stats$simpleStats
 stats.allests.mdwponly<-stats$stats
 
-save(stats.fullmodel, stats.allests, lim.contrasts, pca, voom.trtByMonth,
+save(stats.fullmodel, stats.allests, lim.contrasts, pca, v,
      stats.fullmodel.mdwp, stats.allests.mdwp, stats.fullmodel.mdwponly, stats.fullmodel.mdwponly,
      file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/stats_output/cylinder_allstats.RData")
-

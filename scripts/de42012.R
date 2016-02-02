@@ -8,7 +8,7 @@ info<-info12
 counts<-counts12
 
 #################################
-# Part 1.1: Full model with Treatment
+# Part 1: Full model with Treatment
 #################################
 ## Run LIMMA, with subplot treated as repeated measures of the same plant.
 ### The only response is treatment. Sub_Block is the sub-block in the split plot design, containing two AP13
@@ -16,18 +16,21 @@ counts<-counts12
 ### We do not estimate intercept, so that the model only looks at the effects of Treatment, and the F-test reflects this
 ## Run the modeling pipeline
 stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ Treatment")
+
 ### Extract voom-normalized counts
 v<-stats$voom[["E"]]
+
 ### Extract statistics
 ### Here, the F statistics = "moderated F-statistics for testing all contrasts defined by the columns
 ###     of fit simultaneously equal to zero"
 ### See LIMMA::ebayes for descriptions of other statistics
 stats.fullmodel<-stats$simpleStats
+
 ### Fstatistics for the whole model
 stats.allests<-stats$stats
 
 #################################
-# Part 1.2: All pairwise contrasts
+# Part 2: All pairwise contrasts
 #################################
 ## Generate a design matrix that specifies all relavant contrasts
 f<-info$Treatment
@@ -43,14 +46,14 @@ contrast.matrix<-makeContrasts(f25th-flow, fmean-flow, fambient-flow, f75th-flow
 lim.contrasts<-anovaLIMMA(counts=counts, design=design, block=info$Sub_Block, contrast.matrix=contrast.matrix)
 
 #################################
-# Part 1.3: Run PCA
+# Part 3: Run PCA
 #################################
-pca<-DESeq2PCA(counts=counts, info=info, formula="~ Treatment",
-               factors2Plot=c("Treatment", "Month"),
-               factors2Extract=c("Treatment", "order","MDWP", "PDWP","ID"))
+pca<-voom2PCA(v=v, info=info, ids=info$ID)
+ggplot(pca, aes(x=PC1, y=PC2, col=Treatment, alpha=Treatment))+
+  theme_bw()+geom_point(size=4)
 
 #################################
-# Part 1.4: Subset to lines with physiology data
+# Part 4: Subset to lines with physiology data
 #################################
 phys.lines<-info$ID[!is.na(info$order)]
 counts<-counts[,phys.lines]
@@ -58,14 +61,14 @@ info<-info[info$ID %in% phys.lines,]
 info$Treatment<-factor(info$Treatment, levels=c("low","mean","high"))
 
 #################################
-# Part 1.5: Run model with MDWP as the predictor
+# Part 5: Run model with MDWP as the predictor
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ MDWP")
 stats.fullmodel.mdwp<-stats$simpleStats
 stats.allests.mdwp<-stats$stats
 
 #################################
-# Part 1.6: Run model with MDWP as the predictor
+# Part 6: Run model with MDWP as the predictor
 #################################
 stats<-pipeLIMMA(counts=counts, info=info, block=info$Sub_Block, formula="~ order")
 stats.fullmodel.order<-stats$simpleStats

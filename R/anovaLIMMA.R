@@ -5,7 +5,6 @@ anovaLIMMA<-function(counts, design, contrast.matrix,
   require(edgeR, warn.conflicts = FALSE, quietly=TRUE)
   require(qvalue, warn.conflicts = FALSE, quietly=TRUE)
   require(ggplot2, warn.conflicts = FALSE, quietly=TRUE)
-  require(adegenet, warn.conflicts = FALSE, quietly=TRUE)
   require(qdap, warn.conflicts = FALSE, quietly=TRUE)
 
   geneIDs<-rownames(counts)

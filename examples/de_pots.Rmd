@@ -1,5 +1,52 @@
+---
+title: "Statistical Analysis of Cylinder Expression data"
+author: "John T. Lovell"
+date: "2-February 2016"
+output:
+  html_document:
+    fig_height: 8
+    fig_width: 8
+  pdf_document:
+    fig_height: 3
+    fig_width: 5
+  word_document:
+    fig_height: 3
+    fig_width: 5
+---
+
+
+```{r, include=FALSE}
+# Don't delete this chunk if you are using the mosaic package
+# This loads the mosaic and dplyr packages
+require(mosaic)
+```
+
+```{r, include=FALSE}
+# Some customization.  You can alter or delete as desired (if you know what you are doing).
+
+# This changes the default colors in lattice plots.
+trellis.par.set(theme=theme.mosaic())  
+
+# knitr settings to control how R chunks work.
+require(knitr)
+opts_chunk$set(
+  tidy=FALSE,     # display code as typed
+  size="small"    # slightly smaller font for code
+)
+```
+
+```{r, include=FALSE}
+# Load additional packages here.  Uncomment the line below to use Project MOSAIC data sets.
+# require(mosaicData)   
+```
+
+```{r, include=FALSE} 
 library(devtools)
 install_github("jtlovell/physGenomicsPVFinal")
+library(physGenomicsPVFinal)
+```
+
+```{r}
 library(physGenomicsPVFinal)
 rm(list=ls())
 data(potsGreenhouse)
@@ -48,8 +95,4 @@ contrast.matrix<-makeContrasts(fw_d1_t0-fd_d1_t0, fw_d1_t5-fd_d1_t5, fw_d1_t7-fd
                                fw_d2_t0- fd_d2_t0, fw_d2_t9- fd_d2_t9,
                                levels=design)
 lim.contrasts<-anovaLIMMA(counts=counts, design=design, block=info$id, contrast.matrix=contrast.matrix)
-
-save(stats.fullmodel, stats.allests, lim.contrasts, pca, v,
-     file="/Users/John/Desktop/dropbox/Switchgrass_PlantPhys/stats_output/pots_allstats.RData")
-
-
+```
