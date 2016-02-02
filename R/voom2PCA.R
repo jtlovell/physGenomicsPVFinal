@@ -6,7 +6,7 @@ voom2PCA<-function(v, info, ids, plotit=TRUE){
     par(mfrow=c(2,2))
     bp<-barplot(prop.var[1:5], ylab="% Variance Explained",
                 main="distribution of PCA effects", xlab="PCA Axis",
-                col=c("cyan","cyan","grey","grey","grey"))
+                col=c("cyan","cyan","cyan","grey","grey"))
     axis(1, at=bp[,1], labels=1:5, title)
     with(dat, plot(PC1,PC2, type="n", bty="n", main="PC1 vs. PC2"))
     with(dat, text(PC1,PC2, label=ids))
